@@ -1,0 +1,2 @@
+Compile command in Windows:
+> "C:\Program Files (x86)\MiKTeX 2.9\miktex\bin\pdflatex.exe" --interaction=errorstopmode --synctex=-1 "d:\ansible_presentation\ansible_presentation.tex"

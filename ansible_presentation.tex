@@ -1,0 +1,210 @@
+%\documentclass[pdf, 9pt, unicode]{beamer} %Для Latex2Pdf  tex -> pdf
+\documentclass[pdf, 8pt, unicode, t]{beamer} %Для Latex2Pdf  tex -> pdf
+
+\input{monscrt}
+\input{mondef}
+\input{monogru}
+\input{notations}
+\usepackage{xcolor}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{ifthen}
+\usepackage{color}
+\usepackage{subfig}
+\usepackage{wrapfig}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+%\numberwithin{figure}{section}
+
+\usefonttheme{serif}
+\usepackage{beamerthemesplit} % його дія є цікава! Можна розкоментувати і подивитися. Можна також поставити десь нижче і подивитися на рез.
+\usetheme{CambridgeUS}
+\setbeamercolor*{title}{bg=lightgray!20!white,fg=red!80!black}
+\setbeamerfont*{title}{size=\huge}
+%\setbeamerfont*{title}{size=\Large,shape=\itshape,family=\rmfamily}
+
+\setbeamerfont{date}{size=\normalsize}
+
+%(используйте \alert для выделения цветом выбранной "темы")
+\setbeamercolor{bluetext_color}{fg=blue}
+\newcommand{\bluetext}[1]{{\usebeamercolor[fg]{bluetext_color}#1}}
+\setbeamercolor{redtext_color}{fg=darkred}
+\newcommand{\redtext}[1]{{\usebeamercolor[fg]{redtext_color}#1}}
+\setbeamercolor{blacktext_color}{fg=black}
+\newcommand{\blacktext}[1]{{\usebeamercolor[fg]{blacktext_color}#1}}
+%\setbeamercovered{transparent}
+\setbeamercolor{graytext_color}{fg=gray}
+\newcommand{\graytext}[1]{{\usebeamercolor[fg]{graytext_color}#1}}
+
+\newcommand{\myinsertsubsection}{\alert{\Large\insertsectionnumber.\insertsubsectionnumber. \insertsubsection}}
+
+
+\title{{\bf Ansible \\
+Up \& Running}
+\vspace{5mm}\\
+\large для початківців
+}
+\author{\Large Андрій Андрусик}
+
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber{}\hspace*{2ex}
+  \end{beamercolorbox}}%%
+%\setbeamertemplate{footline}{%
+%   \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[10pt]{\scriptsize\insertframenumber}}}
+%}
+%\setbeamertemplate{footline}[frame number]{\usebeamerfont{footline}}
+
+\newcommand\Switchsection{1}
+\newcommand\Switchsubsection{0}
+\newcommand\SecInHead{%
+  \ifthenelse{\equal{\Switchsection}{1}}
+    {\thesection. }{}}
+\newcommand\SubSecInHead{%
+  \ifthenelse{\equal{\Switchsubsection}{1}}
+    {\thesection.\thesubsection. }{}}
+\setbeamertemplate{headline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+    \usebeamerfont{section in head/foot}\SecInHead\insertsectionhead\hspace*{2ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,left]{subsection in head/foot}%
+    \usebeamerfont{subsection in head/foot}\hspace*{2ex}\SubSecInHead\insertsubsectionhead
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\usecolortheme{rose} % кольорова тема для inner об'єктів
+\setbeamercolor{res1}{fg=black,bg=blue!10!white}
+
+\input{yaml}
+
+%&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+\begin{document}
+\input{includeonly}
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+%                         Слайд Title
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+\begin{frame}[plain,label=title]
+    \titlepage
+\end{frame}
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+\setcounter{framenumber}{0}
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+%                         Слайд 1
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+\begin{frame}
+
+\begin{columns}
+\column{.5\textwidth}
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\setbeamertemplate{itemize items}[square]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\column{.5\textwidth}
+\setbeamertemplate{itemize items}[circle]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\setbeamertemplate{itemize items}[ball]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\end{columns}
+
+\end{frame}
+
+\section{Ansible: що таке, для чого і як працює}
+\renewcommand\Switchsubsection{0}
+\begin{frame}[c]
+\frametitle{1. Ansible: що таке, для чого і як працює}
+\begin{center}
+{\includegraphics[width=0.8\textwidth]{./images/pcs.png}}
+\end{center}
+\end{frame}
+
+\subsection{Основні відомості про Ansible}
+\renewcommand\Switchsubsection{1}
+\begin{frame}[fragile]
+\myinsertsubsection
+\begin{itemize}
+    \item ``{\bf configuration management tool}'': опис стану в якому повинні перебувати сервери
+    \item для опису стану серверів використовується предметно-орієнтована мова програмування (англ. Domain-specific language, DSL)
+    \item використовувається для деплойменту
+    \item ``{\bf orchestration tool}'': може використовуватись для розбудови інфраструктури \\ \vspace{1.5mm}{\small \graytext{ми використовуємо Terraform}}
+    \item використовується для ``{\bf provisioning}'' нових серверів \\ \vspace{1.5mm}{\small  \graytext{розгортання нових віртуальних машин у хмарних середовищах: EC2, Azure, Digital Ocean, Google Compute Engine, Linode і Rackspace, а також будь-які хмарні середовища, що підтримують OpenStack API}}
+    \item написаний на пайтоні
+\end{itemize}
+
+Сказати, чим відрізнється від cheef і Puppet і на наступному слайді дати діаграмку.
+
+\end{frame}
+
+\subsection{Як працювати з Ansible}
+\begin{frame}[label=none]
+%
+\myinsertsubsection
+
+\begin{enumerate}
+\item встановлення: sudo dnf install ansible
+\item Пишеться playbook, yaml-файл
+він визначає стан, в якому має бути в кінцевому випадку віддалена машина
+\item в плейбуці задано віддалені машиши, які будуть конфігуруватися
+\item плейбук поділено на задачі (tasks) які будуть почерзі виконуватися
+\item запуск: ansible-playbook webservers.yml
+\end{enumerate}
+
+Як працює:
+Ansible will make SSH connections
+не потребує агента! + нема сервера.
+
+найпростіша задача:
+
+- name: install nginx
+  dnf: name=nginx
+Ansible will:
+1. Generate a Python script that installs the nginx package.
+2. Copy the script to web1, web2, and web3.
+3. Execute the script on web1, web2, web3.
+4. Wait for the script to complete execution on all hosts.
+Ansible will then move to the next task in the list, and go through these same four
+steps. It’s important to note that:
+• Ansible runs each task in parallel across all hosts.
+• Ansible waits until all hosts have completed a task before moving to the next task.
+• Ansible runs the tasks in the order that you specify them.
+
+можна дати картинку.
+
+\end{frame}
+%++++++++++++++++++++++++++++++++++++++++
+\begin{frame}[plain,c,label=thanks]
+\begin{center}
+\textrm{\bluetext{\Large ДЯКУЮ ЗА УВАГУ}}
+\end{center}
+\end{frame}
+\end{document}

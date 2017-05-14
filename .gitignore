@@ -1,0 +1,12 @@
+tmp_*
+.tmp_*
+.idea/
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.synctex
+*.toc
+*.vrb
+ansible_presentation.pdf
