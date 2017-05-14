@@ -22,6 +22,8 @@
 \usepackage{color}
 \usepackage{subfig}
 \usepackage{wrapfig}
+\usepackage{hyperref}
+
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{caption}[numbered]
@@ -157,10 +159,13 @@ Up \& Running}
     \item для опису стану серверів використовується предметно-орієнтована мова програмування (англ. Domain-specific language, DSL)
     \item використовувається для деплойменту
     \item ``{\bf orchestration tool}'': може використовуватись для розбудови інфраструктури \\ \vspace{1.5mm}{\small \graytext{ми використовуємо Terraform}}
-    \item використовується для ``{\bf provisioning}'' нових серверів \\ \vspace{1.5mm}{\small  \graytext{розгортання нових віртуальних машин у хмарних середовищах: EC2, Azure, Digital Ocean, Google Compute Engine, Linode і Rackspace, а також будь-які хмарні середовища, що підтримують OpenStack API}}
+    \item використовується для ``{\bf provisioning}'' нових серверів \\ \vspace{1.5mm}{\small\graytext{розгортання нових віртуальних машин у хмарних середовищах: EC2, Azure, Digital Ocean, Google Compute Engine, Linode і Rackspace, а також будь-які хмарні середовища, що підтримують OpenStack API}}
     \item написаний на пайтоні
+    \item інші configuration management toolses: {\bf Chef}, {\bf Puppet}, {\bf SaltStack} \\
+    \vspace{1.5mm}{\small\graytext{Ansible: \href{https://www.slideshare.net/JesseKeating/ansiblefest-rax}{Rackspace}\\ Chef: \href{http://www.theregister.co.uk/2013/02/04/opscode_chef_11_control_freak/}{Facebook} \\ Puppet: \href{http://puppetlabs.com/about/customers}{Several} \\ SaltStack: \href{http://aftertheclouds.altervista.org/blog/saltstack-aims-to-simplify-devops-work-with-python-configuration-management/}{LinkedIn}}}
 \end{itemize}
 
+див: https://www.infoq.com/articles/taste-test-book-review \\
 Сказати, чим відрізнється від cheef і Puppet і на наступному слайді дати діаграмку.
 
 \end{frame}
