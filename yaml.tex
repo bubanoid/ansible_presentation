@@ -1,8 +1,8 @@
 \usepackage{listings}
 
-\newcommand\YAMLcolonstyle{\color{red}\mdseries}
-\newcommand\YAMLkeystyle{\color{black}\bfseries}
-\newcommand\YAMLvaluestyle{\color{blue}\mdseries}
+\newcommand\YAMLcolonstyle{\color{blue}}
+\newcommand\YAMLkeystyle{\color{blue}}
+\newcommand\YAMLvaluestyle{\color{olive}}
 
 \makeatletter
 
@@ -36,4 +36,4 @@
 \lst@AddToHook{EveryLine}{\ifx\lst@language\language@yaml\YAMLkeystyle\fi}
 \makeatother
 
-\newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
+\newcommand\ProcessThreeDashes{\llap{\color{blue}\mdseries-{-}-}}

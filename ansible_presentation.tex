@@ -8,9 +8,8 @@
 \usepackage{xcolor}
 
 \usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}
-%\usepackage[cp1251]{inputenc}
-\usepackage[ukrainian]{babel}
+\usepackage[utf8]{inputenc} %\usepackage[cp1251]{inputenc}
+%\usepackage[ukrainian]{babel}  % це для інформаційних повідомлень, типу дати, українською мовою.
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -51,14 +50,18 @@
 \newcommand{\graytext}[1]{{\usebeamercolor[fg]{graytext_color}#1}}
 
 \newcommand{\myinsertsubsection}{\alert{\Large\insertsectionnumber.\insertsubsectionnumber. \insertsubsection}}
+\newcommand{\frametitlesection}{\frametitle{\thesection. \secname}}
+% \insertsectionnumber = \thesection
+% \insertsection = \secname
 
 
 \title{{\bf Ansible \\
 Up \& Running}
 \vspace{5mm}\\
-\large для початківців
+\large for beginers
 }
-\author{\Large Андрій Андрусик}
+\author{\Large Andriy Andrusyk \\ \vspace{2mm} \href{mailto:an.andrusyk@gmail.com}{\normalsize\texttt{an.andrusyk@gmail.com}}}
+\titlegraphic{\includegraphics[width=3cm]{./images/quintagroup_logo.png}}
 
 \setbeamertemplate{footline}{%
   \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
@@ -142,29 +145,37 @@ Up \& Running}
 
 \end{frame}
 
-\section{Ansible: що таке, для чого і як працює}
+\section{Ansible: what? why? how?}
 \renewcommand\Switchsubsection{0}
 \begin{frame}[c]
-\frametitle{1. Ansible: що таке, для чого і як працює}
+\frametitlesection
 \begin{center}
 {\includegraphics[width=0.8\textwidth]{./images/pcs.png}}
 \end{center}
+\bluetext{\href{http://www.intigua.com/blog/puppet-vs.-chef-vs.-ansible-vs.-saltstack}{\underline{http://www.intigua.com/blog/puppet-vs.-chef-vs.-ansible-vs.-saltstack}}}
 \end{frame}
 
-\subsection{Основні відомості про Ansible}
+\subsection{Key information about Ansible}
 \renewcommand\Switchsubsection{1}
 \begin{frame}[fragile]
 \myinsertsubsection
 \begin{itemize}
-    \item ``{\bf configuration management tool}'': опис стану в якому повинні перебувати сервери
-    \item для опису стану серверів використовується предметно-орієнтована мова програмування (англ. Domain-specific language, DSL) із yaml-синтаксисом
-    \item використовувається для деплойменту
-    \item ``{\bf orchestration tool}'': може використовуватись для розбудови інфраструктури \\ \vspace{1.5mm}{\small\graytext{ми використовуємо Terraform}}
-    \item використовується для ``{\bf provisioning}'' нових серверів \\ \vspace{1.5mm}{\small\graytext{розгортання нових віртуальних машин у хмарних середовищах: EC2, Azure, Digital Ocean, Google Compute Engine, Linode і Rackspace, а також будь-які хмарні середовища, що підтримують OpenStack API}}
-    \item написаний на пайтоні
-    \item для конфігурування віддаленої машини достатньо, щоб на ній був встановлений Python
-    \item зв'язок із віддаленою машиною здійснюється по SSH протоколу
-    \item інші configuration management toolses: {\bf Chef}, {\bf Puppet}, {\bf SaltStack} \\
+    \item ``{\bf configuration management tool}'': required servers state description \\
+    \vspace{1.5mm}{\small\graytext{writing some kind of state description for our servers, and then using a tool to
+    enforce that the servers are, indeed, in that state}}
+    \item Ansible exposes a domain-specific language (DSL) with YAML syntax that is used to describe the state of
+    servers.
+    \item can be used for deployment
+    \item ``{\bf orchestration tool}'': can be used for server infrastructure building \\
+       \vspace{1.5mm}{\small\graytext{we use Terraform}}
+    \item can be used for ``{\bf provisioning}'' new servers \\
+       \vspace{1.5mm}{\small\graytext{spinning up a new virtual machine in particular in clouds:
+       EC2, Azure, Digital Ocean, Google Compute Engine, Linode і Rackspace, as well as any clouds that support the
+       OpenStack APIs}}
+    \item written in Python
+    \item for configuring remote servers it is enough Python to be installed there
+    \item the host --- remote server connection is performed over SSH protocol
+    \item other configuration management toolses: {\bf Chef}, {\bf Puppet}, {\bf SaltStack} \\
     \vspace{1.5mm}{\small\graytext{
     Ansible: \href{https://www.slideshare.net/JesseKeating/ansiblefest-rax}{\underline{Rackspace}}\\
     Chef: \href{http://www.theregister.co.uk/2013/02/04/opscode_chef_11_control_freak/}{\underline{Facebook}} \\
@@ -191,27 +202,35 @@ Up \& Running}
 \end{center}
 \end{frame}
 
-\subsection{Як працювати з Ansible}
+\subsection{How to work with Ansible}
 \begin{frame}[fragile, label=none]
 %
 \myinsertsubsection
 
 \begin{enumerate}
-\item встановлення:
+\item install Ansible:
 \begin{Verbatim}[commandchars=\\\{\}]
 \graytext{> pip install ansible}
 \end{Verbatim}
-\item Пишеться playbook, yaml-файл
-він визначає стан, в якому має бути в кінцевому випадку віддалена машина
-\item в плейбуці задано віддалені машиши, які будуть конфігуруватися
-\item плейбук поділено на задачі (tasks) які будуть почерзі виконуватися
-\item запуск: ansible-playbook webservers.yml
+\item write a script called a {\it playbook} in Ansible, actually, a yaml-file
+that defines final state of target machines
+\item target machines to be configured are defined in playbook
+\item playbook is divided into {\it tasks} run in set order
+\item run script:
+\begin{Verbatim}[commandchars=\\\{\}]
+\graytext{> ansible-playbook webservers.yml}
+\end{Verbatim}
 \end{enumerate}
+%
+Simple task:
+%
 
-найпростіша задача:
-
+\begin{lstlisting}[language=yaml]
+---
 - name: install nginx
   dnf: name=nginx
+\end{lstlisting}
+
 Ansible will:
 1. Generate a Python script that installs the nginx package.
 2. Copy the script to web1, web2, and web3.
@@ -227,7 +246,7 @@ steps. It’s important to note that:
 %++++++++++++++++++++++++++++++++++++++++
 \begin{frame}[plain,c,label=thanks]
 \begin{center}
-\textrm{\bluetext{\Large ДЯКУЮ ЗА УВАГУ}}
+\textrm{\bluetext{\Large THANK YOU!}}
 \end{center}
 \end{frame}
 \end{document}
