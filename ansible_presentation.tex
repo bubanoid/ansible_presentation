@@ -202,7 +202,133 @@ Up \& Running}
 \end{center}
 \end{frame}
 
+%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Push-Based}
+
+\hspace{1em}\bluetext{Chef and Puppet: ``pull-based'' by default:}
+\vspace{0.8em}
+%
+\begin{enumerate}[\color{black}(1)]
+\setlength\itemsep{0.7em}
+%\addtolength{\itemindent}{1em}
+\item You: make a change to a configuration management script.
+\item You: push the change up to a configuration management central service.
+\item Agent on server: wakes up after periodic timer fires.
+\item Agent on server: connects to configuration management central service.
+\item Agent on server: downloads new configuration management scripts.
+\item Agent on server: executes configuration management scripts locally which change server state
+\end{enumerate}
+
+\vspace{2.4em}
+\hspace{1em}\bluetext{Ansible is ``push-based'' by default:}
+\vspace{0.8em}
+ %
+\begin{enumerate}[\color{black}(1)]
+\setlength\itemsep{0.7em}
+%\addtolength{\itemindent}{1em}
+\item You: make a change to a playbook.
+\item You: run the new playbook.
+\item Ansible: connects to servers and executes modules, which changes server state.
+\end{enumerate}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%
 \subsection{How to work with Ansible and how it works}
+\begin{frame}[fragile, label=none]
+%
+\myinsertsubsection
+\vspace{1em}
+
+\begin{enumerate}[\color{black}(1)]
+\setlength\itemsep{1.5em}
+%\addtolength{\itemindent}{1em}
+\item install Ansible:
+\begin{Verbatim}[commandchars=\\\{\}]
+\graytext{> pip install ansible}
+\end{Verbatim}
+\item write Ansible configurational file \texttt{\bf{ansible.cfg}}
+\item write \texttt{\bf{hosts}} file with target machines to be configured
+\item write a script called a {\it playbook} in Ansible, actually, a yaml-file
+that defines final state of target machines
+\item divide a playbook into ordered list of {\it tasks}
+\item target machines ({\it hosts} or {\it remote servers}) to be configured are defined in playbook
+\item run script:
+\begin{Verbatim}[commandchars=\\\{\}]
+\graytext{> ansible-playbook webservers.yml}
+\end{Verbatim}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+%\begin{minipage}[t][5cm][b]{0,5\textwidth}
+%\begin{minipage}[c][1em]{0,8\textwidth}
+\begin{block}{Task:}
+Configure three Fedora-based web servers to run nginx using Ansible.
+\end{block}
+\vspace{1em}
+Call hosts as {\bf web1}, {\bf web2}, {\bf web3} and create a playbook with the tasks:
+\begin{itemize}
+\item Install nginx
+\item Generate an nginx configuration file
+\item Copy over the security certificate
+\item Start the nginx service
+\end{itemize}
+\vspace{2mm}
+{\bf Next step:}\\
+\begin{Verbatim}[commandchars=\\\{\}]
+\graytext{> ansible-playbook webservers.yml}
+\end{Verbatim}
+%\vspace{1em}
+%{\bf What Ansible does:}
+Ansible makes SSH connections to web1, web2, and web3.\\
+\vspace{2em}
+The first task looks like this:
+\vspace{2em}
+\begin{columns}[t]
+\column{.4\textwidth}
+%\hspace*{0.5cm}
+\begin{beamercolorbox}[sep=-1.0em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=yaml]
+- name: Install nginx
+  dnf: name=nginx
+\end{lstlisting}
+\end{beamercolorbox}
+\end{columns}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\hspace{2em}\alert{Ansible will:}
+
+\begin{enumerate}[\color{black}1.]
+\addtolength{\itemindent}{1em}
+\item Generate a Python script that installs the nginx package.
+\item Copy the script to web1, web2, and web3.
+\item Execute the script on web1, web2, web3.
+\item Wait for the script to complete execution on all hosts.
+\item Move to the next task.\\
+.....
+\end{enumerate}
+
+%\vspace{1em}
+\hspace{2em}\alert{How Anible works:}
+
+\begin{itemize}
+\item Ansible runs each task in parallel across all hosts.
+\item Ansible waits until all hosts have completed a task before moving to the next task.
+\item Ansible runs the tasks in the order that you specify them.
+\item Ansible modules are {\it idempotent}.
+\end{itemize}
+\begin{center}
+\vspace{-1.2em}
+{\includegraphics[width=0.32\textwidth]{./images/scheme.pdf}}
+\end{center}
+
+\end{frame}
+
 \begin{frame}[fragile, label=none]
 %
 \myinsertsubsection
@@ -254,20 +380,32 @@ that defines final state of target machines
 %\end{center}
 \end{frame}
 
+%\begin{frame}
+%
+%\subsection{How Ansible Works}
+%\myinsertsubsection
+%\vspace{2mm}
+%{\bf Simple playbook} (webservers.yml):
+%\vspace{1mm}
+%
+%\begin{center}
+%\begin{columns}[t,onlytextwidth]
+%\begin{columns}[t]
+%\column{.8\textwidth}
+%\hspace*{0.5cm}
+%\begin{beamercolorbox}[sep=-1.0em,rounded=true,shadow=true,center]{res1}
+%\begin{lstlisting}[language=yaml]
+%---
+%- name: Configure webserver
+%  hosts: webservers
+%\end{lstlisting}
+%\end{beamercolorbox}
+%\end{columns}
+%\end{center}
+%\end{frame}
 
-\begin{frame}
-Ansible will:
-1. Generate a Python script that installs the nginx package.
-2. Copy the script to web1, web2, and web3.
-3. Execute the script on web1, web2, web3.
-4. Wait for the script to complete execution on all hosts.
-Ansible will then move to the next task in the list, and go through these same four
-steps. It’s important to note that:
-• Ansible runs each task in parallel across all hosts.
-• Ansible waits until all hosts have completed a task before moving to the next task.
-• Ansible runs the tasks in the order that you specify them.
+%\end{document}
 
-\end{frame}
 %++++++++++++++++++++++++++++++++++++++++
 \begin{frame}[plain,c,label=thanks]
 \begin{center}
