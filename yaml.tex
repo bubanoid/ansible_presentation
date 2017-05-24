@@ -1,8 +1,8 @@
 \usepackage{listings}
 
-\newcommand\YAMLcolonstyle{\color{blue}}
-\newcommand\YAMLkeystyle{\color{blue}}
-\newcommand\YAMLvaluestyle{\color{olive}}
+\newcommand\YAMLcolonstyle{\color{blue}\ttfamily}
+\newcommand\YAMLkeystyle{\color{blue}\ttfamily}
+\newcommand\YAMLvaluestyle{\color{olive}\ttfamily}
 
 \makeatletter
 
@@ -29,11 +29,11 @@
   literate =    {---}{{\ProcessThreeDashes}}3
                 {>}{{\textcolor{red}\textgreater}}1
                 {|}{{\textcolor{red}\textbar}}1
-                {\ -\ }{{\mdseries\ -\ }}3,
+                {\ -\ }{{\ -\ }}3,
 }
 
 % switch to key style at EOL
 \lst@AddToHook{EveryLine}{\ifx\lst@language\language@yaml\YAMLkeystyle\fi}
 \makeatother
 
-\newcommand\ProcessThreeDashes{\llap{\color{blue}\mdseries-{-}-}}
+\newcommand\ProcessThreeDashes{\color{blue}\mdseries-{-}-}

@@ -49,7 +49,7 @@
 \setbeamercolor{graytext_color}{fg=gray}
 \newcommand{\graytext}[1]{{\usebeamercolor[fg]{graytext_color}#1}}
 
-\newcommand{\myinsertsubsection}{\alert{\Large\insertsectionnumber.\insertsubsectionnumber. \insertsubsection}}
+\newcommand{\myinsertsubsection}{\alert{\Large\insertsectionnumber.\insertsubsectionnumber. \insertsubsection}\\}
 \newcommand{\frametitlesection}{\frametitle{\thesection. \secname}}
 % \insertsectionnumber = \thesection
 % \insertsection = \secname
@@ -202,7 +202,7 @@ Up \& Running}
 \end{center}
 \end{frame}
 
-\subsection{How to work with Ansible}
+\subsection{How to work with Ansible and how it works}
 \begin{frame}[fragile, label=none]
 %
 \myinsertsubsection
@@ -222,15 +222,40 @@ that defines final state of target machines
 \end{Verbatim}
 \end{enumerate}
 %
-Simple task:
+%\subsection{How Ansible Works}
+%\myinsertsubsection
+\vspace{2mm}
+{\bf Simple playbook} (webservers.yml):
+\vspace{1mm}
 %
-
+%\begin{center}
+%\begin{columns}[t,onlytextwidth]
+\begin{columns}[t]
+\column{.88\textwidth}
+%\hspace*{0.5cm}
+\begin{beamercolorbox}[sep=-1.0em,rounded=true,shadow=true,center]{res1}
 \begin{lstlisting}[language=yaml]
 ---
-- name: install nginx
-  dnf: name=nginx
-\end{lstlisting}
+- name: Configure webserver
+  hosts: webservers
+  tasks:
+    - name: Install nginx
+      dnf: name=nginx
+    - name: Install config file
+      template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+      notify: restart nginx
 
+  handlers:
+    - name: restart nginx
+      service name=nginx state=restarted
+\end{lstlisting}
+\end{beamercolorbox}
+\end{columns}
+%\end{center}
+\end{frame}
+
+
+\begin{frame}
 Ansible will:
 1. Generate a Python script that installs the nginx package.
 2. Copy the script to web1, web2, and web3.
