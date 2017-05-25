@@ -329,6 +329,141 @@ The first task looks like this:
 
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Playbooks: general rules}
+\subsection{YAML Syntax}
+\begin{frame}[fragile,label=yaml2]
+\frametitlesection
+\myinsertsubsection
+\vspace{1em}
+See: \bluetext{\small\href{http://docs.ansible.com/ansible/YAMLSyntax.html}{\underline{http://docs.ansible.com/ansible/YAMLSyntax.html}}}
+
+\begin{columns}[t,onlytextwidth]
+\column{.54\textwidth}
+\begin{itemize}
+  \item YAML: begins with \verb!---! and ends with \verb|...|
+  \item List:
+  \begin{beamercolorbox}[dp=1ex,left,leftskip=50ex,wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true]{res1}
+  \begin{lstlisting}[language=yaml]
+---
+# A list of fruits
+fruits:
+  - Apple
+  - Orange
+  - Strawberry
+...
+  \end{lstlisting}
+  \end{beamercolorbox}
+
+  \item Dictionary
+  \begin{beamercolorbox}[wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+  \begin{lstlisting}[language=yaml]
+# An employee record
+volodya:
+  name:  Volodya Maksymiv
+  job:   Developer
+  skill: Elite
+  \end{lstlisting}
+  \end{beamercolorbox}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile,label=yaml3]
+\begin{columns}[t,onlytextwidth]
+\column{1.\textwidth}
+\begin{itemize}
+\item List and Dictionary abbreviated form
+  \begin{beamercolorbox}[wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+  \begin{lstlisting}[language=yaml]
+---
+volodya: {name: V. Maksymiv, job: Developer, skill: Elite}
+fruits: ["Apple", "Orange", "Strawberry", "Mango"]
+  \end{lstlisting}
+  \end{beamercolorbox}
+
+\item Boolean
+  \begin{beamercolorbox}[wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+  \begin{lstlisting}[language=yaml]
+create_key: yes
+needs_agent: no
+knows_oop: True
+likes_emacs: TRUE
+uses_cvs: false
+  \end{lstlisting}
+  \end{beamercolorbox}
+
+\item Spanning multiple lines
+  \begin{beamercolorbox}[wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+  \begin{lstlisting}[language=yaml]
+include_newlines: |
+  exactly as you see
+  will appear these three
+  lines of text
+
+ignore_newlines: >
+  this is really a
+  single line of text
+  despite appearances
+  \end{lstlisting}
+  \end{beamercolorbox}
+
+\end{itemize}
+
+\end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile,label=yaml4]
+\begin{columns}[t,onlytextwidth]
+\column{1.\textwidth}
+\begin{itemize}
+\item Use double quotes if string contains a colon
+  \begin{beamercolorbox}[wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+  \begin{lstlisting}[language=yaml]
+foo: if you want to put colon: here (wrong)
+foo2: if you want to put colon:here (correct)
+foo3: "if you want to put colon: here (correct)"
+  \end{lstlisting}
+  \end{beamercolorbox}
+
+\item Use double quotes if you have a variable
+  \begin{beamercolorbox}[wd=0.9\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+  \begin{lstlisting}[language=yaml]
+foo: "{{ variable }}"
+foo2: "{{ variable }}/additional/string/literal"
+  \end{lstlisting}
+  \end{beamercolorbox}
+
+\end{itemize}
+
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\begin{columns}
+\column{.5\textwidth}
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\column{.5\textwidth}
+\setbeamertemplate{itemize items}[circle]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[fragile, label=none]
 %
 \myinsertsubsection
@@ -380,31 +515,7 @@ that defines final state of target machines
 %\end{center}
 \end{frame}
 
-%\begin{frame}
-%
-%\subsection{How Ansible Works}
-%\myinsertsubsection
-%\vspace{2mm}
-%{\bf Simple playbook} (webservers.yml):
-%\vspace{1mm}
-%
-%\begin{center}
-%\begin{columns}[t,onlytextwidth]
-%\begin{columns}[t]
-%\column{.8\textwidth}
-%\hspace*{0.5cm}
 %\begin{beamercolorbox}[sep=-1.0em,rounded=true,shadow=true,center]{res1}
-%\begin{lstlisting}[language=yaml]
-%---
-%- name: Configure webserver
-%  hosts: webservers
-%\end{lstlisting}
-%\end{beamercolorbox}
-%\end{columns}
-%\end{center}
-%\end{frame}
-
-%\end{document}
 
 %++++++++++++++++++++++++++++++++++++++++
 \begin{frame}[plain,c,label=thanks]
