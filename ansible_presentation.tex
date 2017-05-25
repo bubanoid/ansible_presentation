@@ -51,6 +51,7 @@
 
 \newcommand{\myinsertsubsection}{\alert{\Large\insertsectionnumber.\insertsubsectionnumber. \insertsubsection}\\}
 \newcommand{\frametitlesection}{\frametitle{\thesection. \secname}}
+\newcommand{\frametitlesubsection}{\frametitle{\thesection.\thesubsection. \subsecname}}
 % \insertsectionnumber = \thesection
 % \insertsection = \secname
 
@@ -112,39 +113,6 @@ Up \& Running}
 % $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 %                         Слайд 1
 % $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-\begin{frame}
-
-\begin{columns}
-\column{.5\textwidth}
-  \begin{itemize}
-  \item First item.
-  \item Second item.
-  \item Third item.
-  \end{itemize}
-\setbeamertemplate{itemize items}[square]
-  \begin{itemize}
-  \item First item.
-  \item Second item.
-  \item Third item.
-  \end{itemize}
-\column{.5\textwidth}
-\setbeamertemplate{itemize items}[circle]
-  \begin{itemize}
-  \item First item.
-  \item Second item.
-  \item Third item.
-  \end{itemize}
-\setbeamertemplate{itemize items}[ball]
-  \begin{itemize}
-  \item First item.
-  \item Second item.
-  \item Third item.
-  \end{itemize}
-\end{columns}
-
-\end{frame}
-
 \section{Ansible: what? why? how?}
 \renewcommand\Switchsubsection{0}
 \begin{frame}[c]
@@ -272,10 +240,9 @@ Call hosts as {\bf web1}, {\bf web2}, {\bf web3} and create a playbook with the 
 \begin{itemize}
 \item Install nginx
 \item Generate an nginx configuration file
-\item Copy over the security certificate
 \item Start the nginx service
 \end{itemize}
-\vspace{2mm}
+\vspace*{2em}
 {\bf Next step:}\\
 \begin{Verbatim}[commandchars=\\\{\}]
 \graytext{> ansible-playbook webservers.yml}
@@ -331,7 +298,7 @@ The first task looks like this:
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Playbooks: general rules}
+\section{Anatomy of a Playbook}
 \subsection{YAML Syntax}
 \begin{frame}[fragile,label=yaml2]
 \frametitlesection
@@ -445,77 +412,65 @@ foo2: "{{ variable }}/additional/string/literal"
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\begin{columns}
-\column{.5\textwidth}
-  \begin{itemize}
-  \item First item.
-  \item Second item.
-  \item Third item.
-  \end{itemize}
-\column{.5\textwidth}
-\setbeamertemplate{itemize items}[circle]
-  \begin{itemize}
-  \item First item.
-  \item Second item.
-  \item Third item.
-  \end{itemize}
-\end{columns}
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Playbook example (webservers.yml)}
 \begin{frame}[fragile, label=none]
 %
 \myinsertsubsection
-
-\begin{enumerate}
-\item install Ansible:
-\begin{Verbatim}[commandchars=\\\{\}]
-\graytext{> pip install ansible}
-\end{Verbatim}
-\item write a script called a {\it playbook} in Ansible, actually, a yaml-file
-that defines final state of target machines
-\item target machines to be configured are defined in playbook
-\item playbook is divided into {\it tasks} run in set order
-\item run script:
-\begin{Verbatim}[commandchars=\\\{\}]
-\graytext{> ansible-playbook webservers.yml}
-\end{Verbatim}
-\end{enumerate}
 %
-%\subsection{How Ansible Works}
 %\myinsertsubsection
-\vspace{2mm}
-{\bf Simple playbook} (webservers.yml):
-\vspace{1mm}
+%\vspace{2mm}
+%{\bf Simple playbook} (webservers.yml):
+%\vspace{1mm}
 %
 %\begin{center}
 %\begin{columns}[t,onlytextwidth]
 \begin{columns}[t]
-\column{.88\textwidth}
+\column{1.0\textwidth}
 %\hspace*{0.5cm}
 \begin{beamercolorbox}[sep=-1.0em,rounded=true,shadow=true,center]{res1}
 \begin{lstlisting}[language=yaml]
 ---
-- name: Configure webserver
+- name: Configure webservers with nginx
   hosts: webservers
+  become: yes
+  vars:
+    conf_file: /etc/nginx/sites-available/default
+
   tasks:
     - name: Install nginx
       dnf: name=nginx
-    - name: Install config file
-      template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
-      notify: restart nginx
 
-  handlers:
+    - name: Copy nginx config file
+      template: "src=templates/nginx.conf.j2 dest={{ conf_file }}"
+
     - name: restart nginx
-      service name=nginx state=restarted
+      service: name=nginx state=restarted
 \end{lstlisting}
 \end{beamercolorbox}
 \end{columns}
+\vspace{2em}
+\bluetext{List of main playbook components:}
+\begin{columns}[c,onlytextwidth]
+\column{.40\textwidth}
+\begin{itemize}
+\item play
+\item hosts
+\item user running the script
+\end{itemize}
+\column{.40\textwidth}
+\begin{itemize}
+\item vars
+\item task
+\item module
+\end{itemize}
+\end{columns}
+%
+
 %\end{center}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\begin{beamercolorbox}[sep=-1.0em,rounded=true,shadow=true,center]{res1}
 
 %++++++++++++++++++++++++++++++++++++++++
 \begin{frame}[plain,c,label=thanks]
