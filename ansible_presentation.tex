@@ -626,6 +626,143 @@ Running arbitrary command as a root:
 \end{Verbatim}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\Switchsubsection{1}
+\section{Inventory: Describing Your Servers}
+\subsection{Simple inventory}
+\begin{frame}[fragile]
+\frametitlesection
+\myinsertsubsection
+\vspace{1em}
+\bluetext{Inventory file: usually {\bf\texttt{hosts}}.}
+
+\vspace{1em}
+A very simple inventory file:
+\begin{columns}[t,onlytextwidth]
+\column{.43\textwidth}
+\hspace{1em}
+\begin{beamercolorbox}[dp=1ex,wd=0.43\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{Verbatim}[commandchars=\\\{\}]
+a.example.com
+b.example.com
+c.example.com
+d.example.com
+e.example.com
+\end{Verbatim}
+\end{beamercolorbox}
+\end{columns}
+
+\vspace{1em}
+An inventory file with aliases:
+
+\begin{columns}[t,onlytextwidth]
+\column{.63\textwidth}
+\hspace{1em}
+\begin{beamercolorbox}[dp=1ex,wd=0.8\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{Verbatim}[commandchars=\\\{\}]
+web1  ansible_ssh_host=web1.example.com
+web2  ansible_ssh_host=web2.example.com
+web3  ansible_ssh_host=web3.example.com
+\end{Verbatim}
+\end{beamercolorbox}
+\end{columns}
+\hspace{1em}
+\vspace{-0.5em}
+\begin{columns}[t,onlytextwidth]
+\column{.85\textwidth}
+\hspace{1em}
+\begin{beamercolorbox}[dp=1ex,wd=0.87\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{Verbatim}[commandchars=\\\{\}]
+vagrant1  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+vagrant2  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
+vagrant3  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201
+\end{Verbatim}
+\end{beamercolorbox}
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Groups of servers}
+\begin{frame}[fragile]
+\myinsertsubsection
+\vspace{1em}
+
+\hspace{1em}\bluetext{Simple groups:}\\
+\begin{beamercolorbox}[wd=0.62\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=conf]
+web1    web1.example.com
+web2    web2.example.com
+web3    web3.example.com
+
+[production]
+web1
+web2
+web3
+
+[vagrant]
+vagrant1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+vagrant2 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
+vagrant3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201
+\end{lstlisting}
+\end{beamercolorbox}
+
+\hspace{1em}\bluetext{Groups of Groups:}\\
+\begin{beamercolorbox}[wd=0.62\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=conf]
+[pyramid:children]
+api
+auction
+\end{lstlisting}
+\end{beamercolorbox}
+
+\hspace{1em}\bluetext{Numbered Hosts:}\\
+\begin{beamercolorbox}[wd=0.62\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=conf]
+[web]
+web[1:20].example.com
+\end{lstlisting}
+\end{beamercolorbox}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hosts and Group Variables: Inside the Inventory}
+\begin{frame}[fragile]
+\myinsertsubsection
+\vspace{1em}
+\bluetext{Add new variable \texttt{color}:}
+\begin{beamercolorbox}[dp=1ex,wd=0.87\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{Verbatim}[commandchars=\\\{\}]
+vagrant1  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222  color=red
+vagrant2  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200  color=blue
+vagrant3  ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201  color=green
+\end{Verbatim}
+\end{beamercolorbox}
+
+\vspace{1em}
+We can specify group variables in inventory:
+\vspace{0.5em}
+
+\begin{beamercolorbox}[dp=1ex,wd=0.87\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=conf]
+[all:vars]
+ntp_server=ua.pool.ntp.org
+
+[production:vars]
+db_primary_host=db.example.com
+db_primary_port=5432
+db_replica_host=db2.example.com
+db_name=api_prod
+db_user=ds_user
+db_password=pFmMxcyD4Fc6)6
+
+[staging:vars]
+db_primary_host=db.st.example.com
+db_name=api_sandbox
+db_user=db_user
+db_password=L@4Ryz8cRUXedj
+\end{lstlisting}
+\end{beamercolorbox}
+
+\end{frame}
+
+
 %++++++++++++++++++++++++++++++++++++++++
 \begin{frame}[plain,c,label=thanks]
 \begin{center}
