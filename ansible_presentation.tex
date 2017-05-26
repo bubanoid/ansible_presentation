@@ -840,11 +840,74 @@ Remember:
 \alert{Child groups override parent groups, and hosts always override their groups.}
 \end{beamercolorbox}
 \end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Dynamic Inventory}
+\begin{frame}[fragile,label=dyninv]
+\frametitlesubsection
+Dynamic inventory is used when one has a system external to Ansible that keeps track of hosts.
+\vspace{1em}
 
+Example: hosts run on Amazon EC2. EC2 tracks information about hosts.
+\vspace{1em}
 
+We can retrieve information about hosts through EC2’s web interface, or
+through command-line tool: {\it awscli}.
+\vspace{2em}
+
+Dynamic inventory file: \texttt{\bluetext{./dynamic.py}}
+\vspace{2em}
+
+An Ansible dynamic inventory script must support two command-line flags:
+\begin{itemize}
+\item \texttt{\bluetext{---host=<hostname>}} for showing host details
+\item \texttt{\bluetext{---list}} for listing groups
+\end{itemize}
+\vspace{1em}
+
+Usage example:
+\begin{Verbatim}[commandchars=\\\{\}]
+\graytext{> ./dynamic.py --host=vagrant2}
+\end{Verbatim}
+\vspace{1em}
+
+Expected result (JSON object):
+\begin{columns}[t]
+\column{1.0\textwidth}
+\begin{beamercolorbox}[dp=1ex,wd=\textwidth,sep=-1.0em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=yaml]
+{"ansible_ssh_host": "127.0.0.1", "ansible_ssh_port": 2200,
+"ansible_ssh_user": "vagrant"}
+\end{lstlisting}
+\end{beamercolorbox}
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+\bluetext{Steps for writing custom dynamic inventory for Vagrant span up VM:}
+\vspace{1em}
+\begin{itemize}
+\item use \texttt{\bluetext{Paramiko}} Python SSH driver\\
+\begin{Verbatim}[commandchars=\\\{\}]
+\graytext{> pip install paramiko}
+\end{Verbatim}
+\item use \texttt{subprocess} Python package
+\item extract hosts running \texttt{\graytext{vagrant status ---machine-readable}} in subprocess
+\end{itemize}
+\vspace{1.0em}
+%
+\begin{columns}[t]
+\column{.7\textwidth}
+\begin{beamercolorbox}[dp=0.7ex,wd=1.0\textwidth,sep=0.0em,rounded=true,shadow=true,center]{res1}
+\alert{There are pre-existing inventory scripts. In particular for EC2.}
+\end{beamercolorbox}
+\end{columns}
+\vspace{2em}
+
+There is a possibility of adding entries at runtime with \texttt{\bluetext{add\_host}} and \texttt{\bluetext{group\_by}}\\
+(see documentation).
 
 \end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %++++++++++++++++++++++++++++++++++++++++
