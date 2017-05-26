@@ -709,7 +709,7 @@ vagrant3 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201
 \begin{lstlisting}[language=conf]
 [pyramid:children]
 api
-auction
+auctions
 \end{lstlisting}
 \end{beamercolorbox}
 
@@ -761,7 +761,91 @@ db_password=L@4Ryz8cRUXedj
 \end{beamercolorbox}
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Host and Group Variables: In Their Own Files}
+\begin{frame}[fragile]
+\myinsertsubsection
+\vspace{1em}
+\bluetext{More scalable approach: create a separate variable file for each host and each group.}
+\vspace{1em}
 
+A folder with playbooks:\hspace*{25mm} \verb|./playbooks/|\\
+\vspace{1em}
+
+Inventory file: \hspace*{38mm} \verb|./playbooks/hosts|\\
+\vspace{1em}
+
+variables for the \verb|web1.example.com| host:\hspace*{4mm} \verb|./playbooks/host_vars/web1.example.com|
+\vspace{1em}
+
+variables for \verb|production| group:\hspace*{16mm} \verb|./playbooks/group_vars/production|
+\vspace{2.5em}
+
+The content of \verb|group_vars/production| file:\\
+\begin{columns}[t]
+\column{.47\textwidth}
+\begin{beamercolorbox}[dp=1ex,wd=\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=yaml]
+db_primary_host: db.example.com
+db_primary_port: 5432
+db_replica_host: db2.example.com
+db_name: api_prod
+db_user: ds_user
+db_password: pFmMxcyD4Fc6)6
+\end{lstlisting}
+\end{beamercolorbox}
+\end{columns}
+
+\vspace{1em}
+\bluetext{We may use YAML syntax within variable files}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+
+Enhanced content of \verb|group_vars/production| file:\\
+\vspace{1em}
+\begin{columns}[t]
+\column{.40\textwidth}
+\begin{beamercolorbox}[dp=1ex,wd=\textwidth,sep=-0.5em,rounded=true,shadow=true,center]{res1}
+\begin{lstlisting}[language=yaml]
+db:
+  primary:
+    host: db.example.com
+    port: 5432
+  replica:
+    host: db2.example.com
+    port: 5432
+  name: api_prod
+  user: ds_user
+  password: pFmMxcyD4Fc6)6
+\end{lstlisting}
+\end{beamercolorbox}
+\end{columns}
+\vspace{1em}
+
+Variables usage:
+\begin{columns}[t]
+\column{.62\textwidth}
+\begin{beamercolorbox}[dp=1ex,wd=\textwidth,sep=0.0em,rounded=true,shadow=true,center]{res1}
+\verb|{{ db_primary_host }}| vs \verb|{{ db.primary.host }}|
+\end{beamercolorbox}
+\end{columns}
+\vspace{2em}
+
+Remember:
+\vspace{1em}
+\begin{columns}[t]
+\column{.8\textwidth}
+\begin{beamercolorbox}[dp=1ex,wd=\textwidth,sep=0.0em,rounded=true,shadow=true,center]{res1}
+\alert{Child groups override parent groups, and hosts always override their groups.}
+\end{beamercolorbox}
+\end{columns}
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %++++++++++++++++++++++++++++++++++++++++
 \begin{frame}[plain,c,label=thanks]
